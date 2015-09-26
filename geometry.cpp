@@ -1,5 +1,9 @@
 #include "geometry.h"
 
+#include <iostream>
+
+using namespace std;
+
 Vector operator * (double s, const Vector &v)
 {
 	return Vector(s * v.x, s * v.y);
@@ -70,10 +74,48 @@ void closestPointOnLine(const Vector &endpoint0,
 	}
 }
 
+double cross(const Vector &u, const Vector &v)
+{
+	return u.x * v.y - u.y * v.x;
+}
+
 bool doLinesIntersect(const Vector &p0,
 					  const Vector &p1,
 					  const Vector &q0,
 					  const Vector &q1)
 {
-	return false;
+	cout << p0 << endl;
+	cout << p1 << endl;
+	cout << q0 << endl;
+	cout << q1 << endl;
+
+	Vector r(p1 - p0);
+	Vector s(q1 - q0);
+
+	double rxs = cross(r, s);
+
+	if(abs(rxs) < 0.00001)
+	{
+		cout << "FALSE: rxs is zero" << endl;
+		return false;
+	}
+
+	double u = cross(q0 - p0, r) / rxs;
+
+	if(u < 0.0 || u > 1.0)
+	{
+		cout << "FALSE: u out of range " << u << endl;
+		return false;
+	}
+
+	double t = cross(q0 - p0, s) / rxs;
+
+	if(t < 0.0 || t > 1.0)
+	{
+		cout << "FALSE: t out of range " << t << endl;
+		return false;
+	}
+
+	cout << "TRUE" << endl;
+	return true;
 }

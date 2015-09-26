@@ -37,10 +37,21 @@ bool isVisibleFrom(int i, int j,
 		Vector v0((*itEdge).e0);
 		Vector v1((*itEdge).e1);
 
+		if(u0 == v0 || u0 == v1 || u1 == v0 || u1 == v1)
+		{
+			++itEdge;
+			continue;
+		}
+
+		if(doLinesIntersect(u0, u1, v0, v1))
+		{
+			return false;
+		}
+
 		++itEdge;
 	}
 
-	return false;
+	return true;
 }
 
 void createVisibilityGraph(const Vector &start,

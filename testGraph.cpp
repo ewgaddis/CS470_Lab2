@@ -48,9 +48,19 @@ int main()
 	obstacle.o_corner[1][0] = 6.0f;
 	obstacle.o_corner[1][1] = 2.0f;
 	obstacle.o_corner[2][0] = 6.0f;
-	obstacle.o_corner[2][1] = 6.0f;
+	obstacle.o_corner[2][1] = 3.0f;
 	obstacle.o_corner[3][0] = 2.0f;
-	obstacle.o_corner[3][1] = 6.0f;
+	obstacle.o_corner[3][1] = 3.0f;
+	obstacles.push_back(obstacle);
+	obstacle.numCorners = 4;
+	obstacle.o_corner[0][0] = 4.0f;
+	obstacle.o_corner[0][1] = 8.0f;
+	obstacle.o_corner[1][0] = 6.0f;
+	obstacle.o_corner[1][1] = 8.0f;
+	obstacle.o_corner[2][0] = 6.0f;
+	obstacle.o_corner[2][1] = 4.0f;
+	obstacle.o_corner[3][0] = 4.0f;
+	obstacle.o_corner[3][1] = 4.0f;
 	obstacles.push_back(obstacle);
 
 	createVisibilityGraph(start, goal, obstacles, &graph);
