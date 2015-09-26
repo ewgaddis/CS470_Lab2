@@ -64,6 +64,16 @@ typedef struct sVector
 		return sVector(-x, -y);
 	}
 
+	bool operator == (const sVector &other) const
+	{
+		return (x == other.x && y == other.y);
+	}
+
+	bool operator != (const sVector &other) const
+	{
+		return (x != other.x || y != other.y);
+	}
+
 	double lengthSq() const
 	{
 		return x * x + y * y;
@@ -107,10 +117,25 @@ typedef struct sVector
 Vector operator * (double s, const Vector &v);
 std::ostream & operator << (std::ostream &out, const Vector &v);
 
+typedef struct sEdge
+{
+	Vector e0;
+	Vector e1;
+
+	sEdge() : e0(), e1() {}
+	sEdge(const Vector &end0, const Vector &end1) : e0(end0), e1(end1) {}
+	sEdge(const sEdge &other) : e0(other.e0), e1(other.e1) {}
+} Edge;
+
 void closestPointOnLine(const Vector &endpoint0,
 						const Vector &endpoint1,
 						const Vector &p,
 						Vector *q, Vector *v,
 						double *dist);
+
+bool doLinesIntersect(const Vector &p0,
+					  const Vector &p1,
+					  const Vector &q0,
+					  const Vector &q1);
 
 #endif

@@ -69,3 +69,11 @@ void closestPointOnLine(const Vector &endpoint0,
 		}
 	}
 }
+
+bool doLinesIntersect(const Vector &p0,
+					  const Vector &p1,
+					  const Vector &q0,
+					  const Vector &q1)
+{
+	return false;
+}

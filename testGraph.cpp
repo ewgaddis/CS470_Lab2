@@ -1,4 +1,5 @@
 #include "graph.h"
+#include "graphAlgorithms.h"
 
 #include <iostream>
 #include <conio.h>
@@ -36,17 +37,23 @@ int main()
 {
 	Graph graph;
 
-	graph.addNode(Vector(0.0, 0.0));
-	graph.addNode(Vector(2.0, 1.0));
-	graph.addNode(Vector(-1.0, 3.0));
+	Vector start(0.0f, 0.0f);
+	Vector goal(10.0f, 10.0f);
 
-	graph.addEdge(0, 1);
+	vector<obstacle_t> obstacles;
+	obstacle_t obstacle;
+	obstacle.numCorners = 4;
+	obstacle.o_corner[0][0] = 2.0f;
+	obstacle.o_corner[0][1] = 2.0f;
+	obstacle.o_corner[1][0] = 6.0f;
+	obstacle.o_corner[1][1] = 2.0f;
+	obstacle.o_corner[2][0] = 6.0f;
+	obstacle.o_corner[2][1] = 6.0f;
+	obstacle.o_corner[3][0] = 2.0f;
+	obstacle.o_corner[3][1] = 6.0f;
+	obstacles.push_back(obstacle);
 
-	displayGraph(graph);
-
-	graph.addNode(Vector(4.0, -1.0));
-
-	graph.addEdge(3, 1);
+	createVisibilityGraph(start, goal, obstacles, &graph);
 
 	displayGraph(graph);
 
