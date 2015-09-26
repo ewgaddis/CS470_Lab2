@@ -7,7 +7,7 @@ using namespace std;
 const char *kDefaultServerName = "localhost";
 const int kDefaultServerPort = 52573;
 
-int main(int argc, char *argv[]) {
+/*int main(int argc, char *argv[]) {
 	const char *pcHost;
 	int nPort;
 
@@ -49,4 +49,4 @@ int main(int argc, char *argv[]) {
 	MyTeam.Close();
 
 	return 0;
-}
+}*/
