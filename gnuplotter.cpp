@@ -75,6 +75,28 @@ void GNUPlotter::drawObstacles(const vector<obstacle_t> &obstacles)
 	}
 }
 
+void GNUPlotter::drawGraph(const Graph &graph)
+{
+	if(!file)
+	{
+		return;
+	}
+
+	for(int i = 0; i < graph.getNumberNodes(); ++i)
+	{
+		for(int j = i; j < graph.getNumberNodes(); ++j)
+		{
+			if(graph.edgeExist(i, j))
+			{
+				const Vector & pos1 = graph.getNodePos(i);
+				const Vector & pos2 = graph.getNodePos(j);
+
+				drawLine(pos1.x, pos1.y, pos2.x, pos2.y, -1);
+			}
+		}
+	}
+}
+
 void GNUPlotter::finishFile()
 {
 	if(file)

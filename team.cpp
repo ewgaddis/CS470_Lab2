@@ -2,6 +2,8 @@
 
 #include "gnuplotter.h"
 #include "potentialFields.h"
+#include "graph.h"
+#include "graphAlgorithms.h"
 #include "dumbAgent.h"
 #include "pdAgent.h"
 
@@ -19,18 +21,16 @@ vector <PDAgent*> agents;
 void world_init(BZRC *my_team)
 {
 	team = my_team;
-	vector<tank_t> tanks;
-	team->get_mytanks(&tanks);
 	//dumb1 = new DumbAgent(team, 0);
 	//dumb2 = new DumbAgent(team, 1);
 	//dumb3 = new DumbAgent(team, 2);
 	//pd1 = new PDAgent(team, 0);
-	agents = vector<PDAgent*>();
+	/*agents = vector<PDAgent*>();
 	for (int i = 0; i < 3; i++)
 	{
 		agents.push_back(new PDAgent(team, i));
 		//agents.at(i) = new PDAgent(team, i);
-	}
+	}*/
 
 }
 
@@ -57,66 +57,28 @@ bool robot_update()
 
 		agents.at(i)->Update(color);
 	}*/
-	GNUPlotter plotter;
-
-	cout << "Creating .gpi file..." << endl;
-
-	plotter.createFile("./Data/together.gpi", "Potential Field");
-
-	cout << "Plotting obstacles..." << endl;
-
-	vector<obstacle_t> obstacles;
-	team->get_obstacles(&obstacles);
-	plotter.drawObstacles(obstacles);
+	vector<tank_t> tanks;
+	team->get_mytanks(&tanks);
 
 	vector<flag_t> flags;
 	team->get_flags(&flags);
 
-	cout << "Plotting potential field..." << endl;
+	vector<obstacle_t> obstacles;
+	team->get_obstacles(&obstacles);
 
-	int samples = 25;
-	int d = 800 / samples;
+	Graph graph;
+	
+	createVisibilityGraph(Vector(tanks.at(0).pos[0], tanks.at(0).pos[1]),
+						  Vector(flags.at(0).pos[0], flags.at(0).pos[1]),
+						  obstacles, &graph);
 
-	for(int x = -400; x <= 400; x += d)
-	{
-		for(int y = -400; y <= 400; y += d)
-		{
-			Vector pos(x, y);
+	GNUPlotter plotter;
 
-			vector<Vector> relForces = calcRepulsiveForcesFromObstacles(pos, obstacles, 200.0, 0.0, 50.0);
-			vector<Vector> tanForces = calcTangentialForcesFromObstacles(pos, obstacles, 100.0, 0.0, 50.0);
+	plotter.createFile("./Data/graph2.gpi", "Visibility Graph");
 
-			Vector netForce = calcAttractiveForceToGoal(pos, Vector(flags[0].pos[0], flags[0].pos[1]), 0.5, 20.0, 1.0);
-
-			vector<Vector>::iterator itForce = relForces.begin();
-			while(itForce != relForces.end())
-			{
-				Vector force = (*itForce);
-
-				netForce += force;
-				++itForce;
-			}
-
-			itForce = tanForces.begin();
-			while(itForce != tanForces.end())
-			{
-				Vector force = (*itForce);
-
-				netForce += force;
-				++itForce;
-			}
-
-			if(netForce.lengthSq() < 1.0)
-			{
-				netForce.normalize();
-			}
-
-			plotter.drawArrow(pos.x, pos.y, netForce, 1);
-		}
-	}
+	plotter.drawGraph(graph);
 
 	plotter.finishFile();
-
 	return false;
 }
 

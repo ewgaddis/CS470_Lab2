@@ -3,6 +3,7 @@
 
 #include "team.h"
 #include "geometry.h"
+#include "graph.h"
 
 #include <vector>
 
@@ -21,6 +22,8 @@ public:
 	void drawLine(double x1, double y1, double x2, double y2, int color);
 
 	void drawObstacles(const std::vector<obstacle_t> &obstacles);
+
+	void drawGraph(const Graph &graph);
 };
 
 #endif

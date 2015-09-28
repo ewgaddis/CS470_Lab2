@@ -33,7 +33,7 @@ void displayGraph(const Graph &graph)
 	}
 }
 
-int main()
+/*int main()
 {
 	Graph graph;
 
@@ -69,4 +69,4 @@ int main()
 
 	while(!_kbhit());
 	return 0;
-}
+}*/
