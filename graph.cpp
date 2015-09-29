@@ -45,14 +45,13 @@ bool Graph::edgeExist(int nodeID1, int nodeID2) const
 
 void Graph::getNodesTo(int from, std::vector<int> *nodes) const
 {
-	vector<bool>::const_iterator itTos = edges[from].begin();
-	while(itTos != edges[from].end())
-	{
-		if((*itTos))
-		{
-			nodes->push_back((*itTos));
-		}
+	nodes->clear();
 
-		++itTos;
+	for(int to = 0; to < nextNodeID; ++to)
+	{
+		if(edges[from][to])
+		{
+			nodes->push_back(to);
+		}
 	}
 }

@@ -39,6 +39,17 @@ void GNUPlotter::drawArrow(double x, double y, const Vector &v, int color)
 			color);
 }
 
+void GNUPlotter::drawArrow(const Vector &t, const Vector &h, int color)
+{
+	if(!file)
+	{
+		return;
+	}
+
+	fprintf(file, "set arrow from %f, %f to %f, %f lt %i\n",
+			t.x, t.y, h.x, h.y, color);
+}
+
 void GNUPlotter::drawLine(double x1, double y1, double x2, double y2, int color)
 {
 	if(!file)
@@ -106,6 +117,26 @@ void GNUPlotter::drawGraphSearch(const Graph &graph,
 		return;
 	}
 
+	const bool *visited = graphSearch->getVisited();
+
+	for(int i = 0; i < graph.getNumberNodes(); ++i)
+	{
+		if(visited[i])
+		{
+			fprintf(file, "set object circle at %f,%f size 7 fc rgb \"navy\"\n",
+					graph.getNodePos(i).x, graph.getNodePos(i).y);
+		}
+	}
+
+	vector<int> frontier;
+	graphSearch->getFrontier(&frontier);
+
+	vector<int>::iterator itFrontNode = frontier.begin();
+	while(itFrontNode != frontier.end())
+	{
+		++itFrontNode;
+	}
+
 	deque<int> path;
 	graphSearch->getPath(&path);
 
@@ -115,7 +146,7 @@ void GNUPlotter::drawGraphSearch(const Graph &graph,
 		Vector pos1 = graph.getNodePos(*(itNode - 1));
 		Vector pos2 = graph.getNodePos(*(itNode    ));
 
-		drawArrow(pos1.x, pos1.y, pos2 - pos1, 1);
+		drawArrow(pos1, pos2, 1);
 
 		++itNode;
 	}

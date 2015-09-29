@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <deque>
+#include <stack>
 
 void createVisibilityGraph(const Vector &start,
 						   const Vector &goal,
@@ -41,7 +42,7 @@ public:
 
 	virtual bool search(int iterations) = 0;
 
-	virtual const std::vector<int> & getFrontier() const = 0;
+	virtual void getFrontier(std::vector<int> *nodes) const = 0;
 
 	void setVisited(int nodeID)      { visited[nodeID] = true; }
 	bool isVisited(int nodeID) const { return visited[nodeID]; }
@@ -72,12 +73,15 @@ public:
 
 class DFSearch : public GraphSearch
 {
+private:
+	stack<int> frontier;
+
 public:
 	DFSearch(const Graph &g);
 
 	bool search(int iterations);
 
-	const std::vector<int> & getFrontier() const;
+	void getFrontier(std::vector<int> *nodes) const;
 };
 
 #endif

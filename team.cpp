@@ -72,13 +72,20 @@ bool robot_update()
 						  Vector(flags.at(0).pos[0], flags.at(0).pos[1]),
 						  obstacles, &graph);
 
+	GraphSearch *search = new DFSearch(graph);
+	search->search(100);
+
 	GNUPlotter plotter;
 
-	plotter.createFile("./Data/graph2.gpi", "Visibility Graph");
+	plotter.createFile("./Data/dfs.gpi", "Depth-First Search");
 
 	plotter.drawGraph(graph);
+	plotter.drawGraphSearch(graph, search);
 
 	plotter.finishFile();
+
+	delete search;
+
 	return false;
 }
 

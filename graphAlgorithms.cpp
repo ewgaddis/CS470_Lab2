@@ -1,5 +1,7 @@
 #include "graphAlgorithms.h"
 
+#include <iostream>
+
 using namespace std;
 
 bool isObstacleEdge(int i, int j,
@@ -181,14 +183,53 @@ void createVisibilityGraph(const Vector &start,
 
 DFSearch::DFSearch(const Graph &g) : GraphSearch(g)
 {
+	frontier.push(0);
 }
 
 bool DFSearch::search(int iterations)
 {
+	while(!frontier.empty() && iterations > 0)
+	{
+		int curNode = frontier.top();
+		frontier.pop();
+
+		if(isVisited(curNode))
+		{
+			continue;
+		}
+
+		setVisited(curNode);
+
+		vector<int> nodes;
+		graph->getNodesTo(curNode, &nodes);
+
+		vector<int>::iterator itNode = nodes.begin();
+		while(itNode != nodes.end())
+		{
+			if(!isVisited(*itNode))
+			{
+				frontier.push(*itNode);
+				setParent(*itNode, curNode);
+			}
+
+			++itNode;
+		}
+
+		--iterations;
+	}
+
 	return false;
 }
 
-const vector<int> & DFSearch::getFrontier() const
+void DFSearch::getFrontier(std::vector<int> *nodes) const
 {
-	return vector<int>();
+	nodes->clear();
+
+	stack<int> s(frontier);
+
+	while(!s.empty())
+	{
+		nodes->push_back(s.top());
+		s.pop();
+	}
 }
