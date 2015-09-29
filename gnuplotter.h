@@ -4,6 +4,7 @@
 #include "team.h"
 #include "geometry.h"
 #include "graph.h"
+#include "graphAlgorithms.h"
 
 #include <vector>
 
@@ -24,6 +25,9 @@ public:
 	void drawObstacles(const std::vector<obstacle_t> &obstacles);
 
 	void drawGraph(const Graph &graph);
+
+	void drawGraphSearch(const Graph &graph,
+						 const GraphSearch *graphSearch);
 };
 
 #endif

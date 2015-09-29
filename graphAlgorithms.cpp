@@ -178,3 +178,17 @@ void createVisibilityGraph(const Vector &start,
 		}
 	}
 }
+
+DFSearch::DFSearch(const Graph &g) : GraphSearch(g)
+{
+}
+
+bool DFSearch::search(int iterations)
+{
+	return false;
+}
+
+const vector<int> & DFSearch::getFrontier() const
+{
+	return vector<int>();
+}

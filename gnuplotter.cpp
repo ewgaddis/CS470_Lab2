@@ -1,6 +1,7 @@
 #include "gnuplotter.h"
 
 #include <iostream>
+#include <deque>
 
 using namespace std;
 
@@ -94,6 +95,29 @@ void GNUPlotter::drawGraph(const Graph &graph)
 				drawLine(pos1.x, pos1.y, pos2.x, pos2.y, -1);
 			}
 		}
+	}
+}
+
+void GNUPlotter::drawGraphSearch(const Graph &graph,
+								 const GraphSearch *graphSearch)
+{
+	if(!file)
+	{
+		return;
+	}
+
+	deque<int> path;
+	graphSearch->getPath(&path);
+
+	deque<int>::iterator itNode = path.begin() + 1;
+	while(itNode != path.end())
+	{
+		Vector pos1 = graph.getNodePos(*(itNode - 1));
+		Vector pos2 = graph.getNodePos(*(itNode    ));
+
+		drawArrow(pos1.x, pos1.y, pos2 - pos1, 1);
+
+		++itNode;
 	}
 }
 

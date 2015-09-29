@@ -6,10 +6,78 @@
 #include "team.h"
 
 #include <vector>
+#include <deque>
 
 void createVisibilityGraph(const Vector &start,
 						   const Vector &goal,
 						   const std::vector<obstacle_t> &obstacles,
 						   Graph *graph);
+
+class GraphSearch
+{
+protected:
+	const Graph *graph;
+
+private:
+	bool *visited;
+
+	int *parent;
+
+public:
+	GraphSearch(const Graph &g) : graph(&g)
+	{
+		visited = new bool[g.getNumberNodes()];
+		parent  = new int[g.getNumberNodes()];
+
+		memset(visited, false, sizeof(bool) * g.getNumberNodes());
+		memset(parent,  -1,    sizeof(int)  * g.getNumberNodes());
+	}
+
+	virtual ~GraphSearch()
+	{
+		delete[] visited;
+		delete[] parent;
+	}
+
+	virtual bool search(int iterations) = 0;
+
+	virtual const std::vector<int> & getFrontier() const = 0;
+
+	void setVisited(int nodeID)      { visited[nodeID] = true; }
+	bool isVisited(int nodeID) const { return visited[nodeID]; }
+	const bool *getVisited() const   { return visited;         }
+
+	void setParent(int nodeID, int parentID) { parent[nodeID] = parentID; }
+	int  getParent(int nodeID) const         { return parent[nodeID];     }
+
+	void getPath(std::deque<int> *path) const
+	{
+		path->clear();
+
+		int node = 1;
+
+		do
+		{
+			path->push_front(node);
+			node = parent[node];
+		}
+		while(node != 0 && node != -1);
+
+		if(node == 0)
+		{
+			path->push_front(0);
+		}
+	}
+};
+
+class DFSearch : public GraphSearch
+{
+public:
+	DFSearch(const Graph &g);
+
+	bool search(int iterations);
+
+	const std::vector<int> & getFrontier() const;
+};
 
 #endif
