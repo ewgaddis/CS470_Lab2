@@ -84,4 +84,10 @@ public:
 	void getFrontier(std::vector<int> *nodes) const;
 };
 
+void drawGraphSearch(const Graph &graph,
+					 GraphSearch *search,
+					 int maxIterations,
+					 const char *fileName,
+					 const char *titleName);
+
 #endif

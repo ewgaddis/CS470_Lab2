@@ -1,8 +1,13 @@
 #include "graphAlgorithms.h"
 
+#include "gnuplotter.h"
+
 #include <iostream>
+#include <MMSystem.h>
 
 using namespace std;
+
+#define GRAPH_BOUNDARY 390.0
 
 bool isObstacleEdge(int i, int j,
 					const vector<Edge> &edges,
@@ -14,21 +19,15 @@ bool isObstacleEdge(int i, int j,
 		return false;
 	}
 
-	// If there is an edge from node i to j, then
+	// If there is an edge from node i to j or from node j to i, then
 	// this is an obstacle edge.
-	if(edges.at(i - 2).e1 == graph->getNodePos(j))
+	if(edges.at(i - 2).e1 == graph->getNodePos(j) ||
+	   edges.at(j - 2).e1 == graph->getNodePos(i))
 	{
 		return true;
 	}
 
-	// If there is an edge from node j to i, then
-	// this is an obstacle edge.
-	if(edges.at(j - 2).e1 == graph->getNodePos(i))
-	{
-		return true;
-	}
-
-	// There is no edge from node i to j and vice versa.
+	// There is no edge from node i to j and from node j to i.
 	return false;
 }
 
@@ -163,10 +162,21 @@ void createVisibilityGraph(const Vector &start,
 		for(int j = i + 1; j < graph->getNumberNodes(); ++j)
 		{
 			// If the edge from node i to j is an obstacle
-			// edge, then adds its into the graph
+			// edge
 			if(isObstacleEdge(i, j, obstacleEdges, graph))
 			{
-				graph->addEdge(i, j);
+				Vector c1(graph->getNodePos(i));
+				Vector c2(graph->getNodePos(j));
+
+				// If the obstacle edge is not near the world boundary,
+				// then adds it into the graph
+				if(((c1.x <=  GRAPH_BOUNDARY || c2.x <=  GRAPH_BOUNDARY) &&
+				    (c1.x >= -GRAPH_BOUNDARY || c2.x >= -GRAPH_BOUNDARY) &&
+				    (c1.y <=  GRAPH_BOUNDARY || c2.y <=  GRAPH_BOUNDARY) &&
+				    (c1.y >= -GRAPH_BOUNDARY || c2.y >= -GRAPH_BOUNDARY)))
+				{
+					graph->addEdge(i, j);
+				}
 			}
 			else if(!areCornersOfSameObstacle(i, j, obstacles) &&
 					isVisibleFrom(i, j, obstacleEdges, graph))
@@ -200,6 +210,11 @@ bool DFSearch::search(int iterations)
 
 		setVisited(curNode);
 
+		if(curNode == 1)
+		{
+			return true;
+		}
+
 		vector<int> nodes;
 		graph->getNodesTo(curNode, &nodes);
 
@@ -232,4 +247,48 @@ void DFSearch::getFrontier(std::vector<int> *nodes) const
 		nodes->push_back(s.top());
 		s.pop();
 	}
+}
+
+void drawGraphSearch(const Graph &graph,
+					 GraphSearch *search,
+					 int maxIterations,
+					 const char *fileName,
+					 const char *titleName)
+{
+	char file[256], title[256];
+
+	int iteration = 1;
+
+	GNUPlotter plotter;
+
+	DWORD startTime = timeGetTime();
+
+	while(!search->search(1) && iteration <= maxIterations)
+	{
+		vector<int> frontier;
+		search->getFrontier(&frontier);
+
+		if(frontier.size() == 0)
+		{
+			break;
+		}
+
+		sprintf(file,  "%s%i.gpi", fileName,  iteration);
+		sprintf(title, "%s%i",     titleName, iteration);
+
+		++iteration;
+
+		plotter.createFile(file, title);
+
+		plotter.drawGraph(graph);
+		plotter.drawGraphSearch(graph, search);
+
+		char time[64];
+		sprintf(time, "%.4f seconds", (timeGetTime() - startTime) / 1000.0f);
+		plotter.drawText(-400, -370, time);
+
+		plotter.finishFile();
+	}
+
+	delete search;
 }

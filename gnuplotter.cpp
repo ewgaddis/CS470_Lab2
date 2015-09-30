@@ -33,7 +33,7 @@ void GNUPlotter::drawArrow(double x, double y, const Vector &v, int color)
 		return;
 	}
 
-	fprintf(file, "set arrow from %f, %f to %f, %f lt %i\n",
+	fprintf(file, "set arrow from %f, %f to %f, %f size 25, 20 lt %i\n",
 			x - v.x / 2.0, y - v.y / 2.0,
 			x + v.x / 2.0, y + v.y / 2.0,
 			color);
@@ -46,7 +46,7 @@ void GNUPlotter::drawArrow(const Vector &t, const Vector &h, int color)
 		return;
 	}
 
-	fprintf(file, "set arrow from %f, %f to %f, %f lt %i\n",
+	fprintf(file, "set arrow from %f, %f to %f, %f size 25, 20 lt %i\n",
 			t.x, t.y, h.x, h.y, color);
 }
 
@@ -59,6 +59,28 @@ void GNUPlotter::drawLine(double x1, double y1, double x2, double y2, int color)
 
 	fprintf(file, "set arrow from %f, %f to %f, %f nohead lt %i\n",
 			x1, y1, x2, y2, color);
+}
+
+void GNUPlotter::drawCircle(const Vector &c, int radius,
+							unsigned char r, unsigned char g, unsigned char b)
+{
+	if(!file)
+	{
+		return;
+	}
+
+	fprintf(file, "set object circle at %f,%f size %i fillcolor rgb \"#%02X%02X%02X\" fillstyle solid\n",
+			c.x, c.y, radius, r, g, b);
+}
+
+void GNUPlotter::drawText(double x, double y, const char *text)
+{
+	if(!file)
+	{
+		return;
+	}
+
+	fprintf(file, "set label \"%s\" at %f,%f\n", text, x, y);
 }
 
 void GNUPlotter::drawObstacles(const vector<obstacle_t> &obstacles)
@@ -117,24 +139,17 @@ void GNUPlotter::drawGraphSearch(const Graph &graph,
 		return;
 	}
 
-	const bool *visited = graphSearch->getVisited();
-
 	for(int i = 0; i < graph.getNumberNodes(); ++i)
 	{
-		if(visited[i])
+		int parent = graphSearch->getParent(i);
+
+		if(parent != -1)
 		{
-			fprintf(file, "set object circle at %f,%f size 7 fc rgb \"navy\"\n",
-					graph.getNodePos(i).x, graph.getNodePos(i).y);
+			const Vector & pos1 = graph.getNodePos(i);
+			const Vector & pos2 = graph.getNodePos(parent);
+
+			drawLine(pos1.x, pos1.y, pos2.x, pos2.y, 5);
 		}
-	}
-
-	vector<int> frontier;
-	graphSearch->getFrontier(&frontier);
-
-	vector<int>::iterator itFrontNode = frontier.begin();
-	while(itFrontNode != frontier.end())
-	{
-		++itFrontNode;
 	}
 
 	deque<int> path;
@@ -149,6 +164,29 @@ void GNUPlotter::drawGraphSearch(const Graph &graph,
 		drawArrow(pos1, pos2, 1);
 
 		++itNode;
+	}
+
+	const bool *visited = graphSearch->getVisited();
+
+	for(int i = 0; i < graph.getNumberNodes(); ++i)
+	{
+		if(visited[i])
+		{
+			drawCircle(graph.getNodePos(i), 10,
+					   255, 0, 0);
+		}
+	}
+
+	vector<int> frontier;
+	graphSearch->getFrontier(&frontier);
+
+	vector<int>::iterator itFrontNode = frontier.begin();
+	while(itFrontNode != frontier.end())
+	{
+		drawCircle(graph.getNodePos(*itFrontNode), 12,
+				   0, 255, 0);
+
+		++itFrontNode;
 	}
 }
 
