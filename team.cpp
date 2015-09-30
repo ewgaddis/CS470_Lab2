@@ -72,7 +72,7 @@ bool robot_update()
 						  Vector(flags.at(0).pos[0], flags.at(0).pos[1]),
 						  obstacles, &graph);
 
-	GraphSearch *search = new DFSearch(graph);
+	GraphSearch *search = new BFSearch(graph);
 	search->search(100);
 
 	GNUPlotter plotter;

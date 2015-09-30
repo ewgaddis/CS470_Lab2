@@ -233,3 +233,61 @@ void DFSearch::getFrontier(std::vector<int> *nodes) const
 		s.pop();
 	}
 }
+
+BFSearch::BFSearch(const Graph &g) : GraphSearch(g)
+{
+	frontier.push(0);
+}
+
+bool BFSearch::search(int iterations)
+{
+	while (!frontier.empty() && iterations > 0)
+	{
+		int curNode = frontier.front();
+		frontier.pop();//grab shallowest node
+
+		if (isVisited(curNode))
+		{
+			continue;
+		}
+
+		setVisited(curNode);//good till now
+
+		vector<int> nodes;
+		graph->getNodesTo(curNode, &nodes);
+
+		vector<int>::iterator itNode = nodes.begin();
+		while (itNode != nodes.end())
+		{
+			if (!isVisited(*itNode))
+			{
+				if (*itNode == 1){
+					setParent(*itNode, curNode);
+					return true;
+				}
+
+				frontier.push(*itNode);
+				setParent(*itNode, curNode);
+			}
+
+			++itNode;
+		}
+
+		--iterations;
+	}
+
+	return false;
+}
+
+void BFSearch::getFrontier(std::vector<int> *nodes) const
+{
+	nodes->clear();
+
+	queue<int> s(frontier);
+
+	while (!s.empty())
+	{
+		nodes->push_back(s.front());
+		s.pop();
+	}
+}

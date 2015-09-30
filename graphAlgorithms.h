@@ -8,6 +8,7 @@
 #include <vector>
 #include <deque>
 #include <stack>
+#include <queue>
 
 void createVisibilityGraph(const Vector &start,
 						   const Vector &goal,
@@ -78,6 +79,19 @@ private:
 
 public:
 	DFSearch(const Graph &g);
+
+	bool search(int iterations);
+
+	void getFrontier(std::vector<int> *nodes) const;
+};
+
+class BFSearch : public GraphSearch
+{
+private:
+	queue<int> frontier;
+
+public:
+	BFSearch(const Graph &g);
 
 	bool search(int iterations);
 
