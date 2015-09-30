@@ -30,3 +30,6 @@
 # VS Projects
 *.vcxproj*
 /Debug/*
+*.sln
+*.sdf
+*.opensdf
