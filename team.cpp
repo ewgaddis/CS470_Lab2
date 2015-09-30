@@ -8,6 +8,7 @@
 #include "pdAgent.h"
 
 #include <vector>
+#include <conio.h>
 
 using namespace std;
 
@@ -85,6 +86,9 @@ bool robot_update()
 	plotter.finishFile();
 
 	delete search;
+	drawGraphSearch(graph, new DFSearch(graph), 20,
+					"./Data/DFS/dfs",
+					"Depth-First Search - Iteration #");
 
 	return false;
 }

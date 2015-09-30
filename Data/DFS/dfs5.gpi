@@ -1,0 +1,99 @@
+set title "Depth-First Search - Iteration #5"
+set xrange [-400.0: 400.0]
+set yrange [-400.0: 400.0]
+unset key
+set size square
+set arrow from -2.000000, -348.000000 to 400.000000, -260.000000 nohead lt -1
+set arrow from -2.000000, -348.000000 to -80.000000, -260.000000 nohead lt -1
+set arrow from -2.000000, -348.000000 to -400.000000, -140.000000 nohead lt -1
+set arrow from 0.000000, 370.000000 to -400.000000, 140.000000 nohead lt -1
+set arrow from 0.000000, 370.000000 to 400.000000, 260.000000 nohead lt -1
+set arrow from 0.000000, 370.000000 to -80.000000, 260.000000 nohead lt -1
+set arrow from 400.000000, -220.000000 to -80.000000, -220.000000 nohead lt -1
+set arrow from 400.000000, -220.000000 to 80.000000, -100.000000 nohead lt -1
+set arrow from 400.000000, -220.000000 to 80.000000, -140.000000 nohead lt -1
+set arrow from 400.000000, -220.000000 to -400.000000, -140.000000 nohead lt -1
+set arrow from 400.000000, -220.000000 to 400.000000, -20.000000 nohead lt -1
+set arrow from 400.000000, -220.000000 to -80.000000, -20.000000 nohead lt -1
+set arrow from 400.000000, -220.000000 to -400.000000, 100.000000 nohead lt -1
+set arrow from 400.000000, -260.000000 to -80.000000, -260.000000 nohead lt -1
+set arrow from -80.000000, -260.000000 to -80.000000, -220.000000 nohead lt -1
+set arrow from -80.000000, -260.000000 to -400.000000, -140.000000 nohead lt -1
+set arrow from -80.000000, -220.000000 to 80.000000, -140.000000 nohead lt -1
+set arrow from -80.000000, -220.000000 to -400.000000, -140.000000 nohead lt -1
+set arrow from -80.000000, -220.000000 to 400.000000, -20.000000 nohead lt -1
+set arrow from 80.000000, -100.000000 to 80.000000, -140.000000 nohead lt -1
+set arrow from 80.000000, -100.000000 to -400.000000, -100.000000 nohead lt -1
+set arrow from 80.000000, -100.000000 to 400.000000, -20.000000 nohead lt -1
+set arrow from 80.000000, -100.000000 to -80.000000, -20.000000 nohead lt -1
+set arrow from 80.000000, -100.000000 to -400.000000, 100.000000 nohead lt -1
+set arrow from 80.000000, -140.000000 to -400.000000, -140.000000 nohead lt -1
+set arrow from 80.000000, -140.000000 to 400.000000, -20.000000 nohead lt -1
+set arrow from -400.000000, -100.000000 to 400.000000, -20.000000 nohead lt -1
+set arrow from -400.000000, -100.000000 to -80.000000, -20.000000 nohead lt -1
+set arrow from -400.000000, -100.000000 to -80.000000, 20.000000 nohead lt -1
+set arrow from -400.000000, -100.000000 to 80.000000, 100.000000 nohead lt -1
+set arrow from -400.000000, -100.000000 to -400.000000, 100.000000 nohead lt -1
+set arrow from -400.000000, -100.000000 to 400.000000, 220.000000 nohead lt -1
+set arrow from 400.000000, 20.000000 to -80.000000, 20.000000 nohead lt -1
+set arrow from 400.000000, 20.000000 to 80.000000, 140.000000 nohead lt -1
+set arrow from 400.000000, 20.000000 to 80.000000, 100.000000 nohead lt -1
+set arrow from 400.000000, 20.000000 to -400.000000, 100.000000 nohead lt -1
+set arrow from 400.000000, 20.000000 to 400.000000, 220.000000 nohead lt -1
+set arrow from 400.000000, 20.000000 to -80.000000, 220.000000 nohead lt -1
+set arrow from 400.000000, -20.000000 to -80.000000, -20.000000 nohead lt -1
+set arrow from -80.000000, -20.000000 to -80.000000, 20.000000 nohead lt -1
+set arrow from -80.000000, -20.000000 to -400.000000, 100.000000 nohead lt -1
+set arrow from -80.000000, 20.000000 to 80.000000, 100.000000 nohead lt -1
+set arrow from -80.000000, 20.000000 to -400.000000, 100.000000 nohead lt -1
+set arrow from -80.000000, 20.000000 to 400.000000, 220.000000 nohead lt -1
+set arrow from 80.000000, 140.000000 to 80.000000, 100.000000 nohead lt -1
+set arrow from 80.000000, 140.000000 to -400.000000, 140.000000 nohead lt -1
+set arrow from 80.000000, 140.000000 to 400.000000, 220.000000 nohead lt -1
+set arrow from 80.000000, 140.000000 to -80.000000, 220.000000 nohead lt -1
+set arrow from 80.000000, 100.000000 to -400.000000, 100.000000 nohead lt -1
+set arrow from 80.000000, 100.000000 to 400.000000, 220.000000 nohead lt -1
+set arrow from -400.000000, 140.000000 to 400.000000, 220.000000 nohead lt -1
+set arrow from -400.000000, 140.000000 to -80.000000, 220.000000 nohead lt -1
+set arrow from -400.000000, 140.000000 to -80.000000, 260.000000 nohead lt -1
+set arrow from 400.000000, 260.000000 to -80.000000, 260.000000 nohead lt -1
+set arrow from 400.000000, 220.000000 to -80.000000, 220.000000 nohead lt -1
+set arrow from -80.000000, 220.000000 to -80.000000, 260.000000 nohead lt -1
+set arrow from 400.000000, -220.000000 to -80.000000, -20.000000 nohead lt 5
+set arrow from 400.000000, -260.000000 to -2.000000, -348.000000 nohead lt 5
+set arrow from -80.000000, -260.000000 to -400.000000, -140.000000 nohead lt 5
+set arrow from -80.000000, -220.000000 to 400.000000, -20.000000 nohead lt 5
+set arrow from 80.000000, -100.000000 to -80.000000, -20.000000 nohead lt 5
+set arrow from 80.000000, -140.000000 to -400.000000, -140.000000 nohead lt 5
+set arrow from -400.000000, -140.000000 to -2.000000, -348.000000 nohead lt 5
+set arrow from -400.000000, -100.000000 to -80.000000, -20.000000 nohead lt 5
+set arrow from 400.000000, -20.000000 to 80.000000, -140.000000 nohead lt 5
+set arrow from -80.000000, -20.000000 to 400.000000, -20.000000 nohead lt 5
+set arrow from -80.000000, 20.000000 to -80.000000, -20.000000 nohead lt 5
+set arrow from -400.000000, 100.000000 to -80.000000, -20.000000 nohead lt 5
+set object circle at -2.000000,-348.000000 size 10 fillcolor rgb "#FF0000" fillstyle solid
+set object circle at 80.000000,-140.000000 size 10 fillcolor rgb "#FF0000" fillstyle solid
+set object circle at -400.000000,-140.000000 size 10 fillcolor rgb "#FF0000" fillstyle solid
+set object circle at 400.000000,-20.000000 size 10 fillcolor rgb "#FF0000" fillstyle solid
+set object circle at -80.000000,-20.000000 size 10 fillcolor rgb "#FF0000" fillstyle solid
+set object circle at -400.000000,100.000000 size 12 fillcolor rgb "#00FF00" fillstyle solid
+set object circle at -80.000000,20.000000 size 12 fillcolor rgb "#00FF00" fillstyle solid
+set object circle at -400.000000,-100.000000 size 12 fillcolor rgb "#00FF00" fillstyle solid
+set object circle at 80.000000,-100.000000 size 12 fillcolor rgb "#00FF00" fillstyle solid
+set object circle at 400.000000,-220.000000 size 12 fillcolor rgb "#00FF00" fillstyle solid
+set object circle at -400.000000,-100.000000 size 12 fillcolor rgb "#00FF00" fillstyle solid
+set object circle at 80.000000,-100.000000 size 12 fillcolor rgb "#00FF00" fillstyle solid
+set object circle at -80.000000,-220.000000 size 12 fillcolor rgb "#00FF00" fillstyle solid
+set object circle at 400.000000,-220.000000 size 12 fillcolor rgb "#00FF00" fillstyle solid
+set object circle at 80.000000,-100.000000 size 12 fillcolor rgb "#00FF00" fillstyle solid
+set object circle at -80.000000,-220.000000 size 12 fillcolor rgb "#00FF00" fillstyle solid
+set object circle at 400.000000,-220.000000 size 12 fillcolor rgb "#00FF00" fillstyle solid
+set object circle at -80.000000,-220.000000 size 12 fillcolor rgb "#00FF00" fillstyle solid
+set object circle at -80.000000,-260.000000 size 12 fillcolor rgb "#00FF00" fillstyle solid
+set object circle at 400.000000,-220.000000 size 12 fillcolor rgb "#00FF00" fillstyle solid
+set object circle at -80.000000,-260.000000 size 12 fillcolor rgb "#00FF00" fillstyle solid
+set object circle at 400.000000,-260.000000 size 12 fillcolor rgb "#00FF00" fillstyle solid
+set label "0.0130 seconds" at -400.000000,-370.000000
+plot '-' with lines
+0 0 0 0
+e
