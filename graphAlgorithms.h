@@ -89,6 +89,7 @@ class BFSearch : public GraphSearch
 {
 private:
 	queue<int> frontier;
+	bool contains(int node);
 
 public:
 	BFSearch(const Graph &g);

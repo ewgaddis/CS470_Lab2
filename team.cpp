@@ -73,22 +73,9 @@ bool robot_update()
 						  Vector(flags.at(0).pos[0], flags.at(0).pos[1]),
 						  obstacles, &graph);
 
-	GraphSearch *search = new BFSearch(graph);
-	search->search(100);
-
-	GNUPlotter plotter;
-
-	plotter.createFile("./Data/dfs.gpi", "Depth-First Search");
-
-	plotter.drawGraph(graph);
-	plotter.drawGraphSearch(graph, search);
-
-	plotter.finishFile();
-
-	delete search;
-	drawGraphSearch(graph, new DFSearch(graph), 20,
-					"./Data/DFS/dfs",
-					"Depth-First Search - Iteration #");
+	drawGraphSearch(graph, new BFSearch(graph), 100,
+					"./Data/BFS/bfs",
+					"Breadth-First Search - Iteration #");
 
 	return false;
 }

@@ -274,10 +274,11 @@ bool BFSearch::search(int iterations)
 		vector<int>::iterator itNode = nodes.begin();
 		while (itNode != nodes.end())
 		{
-			if (!isVisited(*itNode))
+			if (!isVisited(*itNode) && !contains(*itNode))
 			{
 				if (*itNode == 1){
 					setParent(*itNode, curNode);
+					setVisited(*itNode);
 					return true;
 				}
 
@@ -305,6 +306,17 @@ void BFSearch::getFrontier(std::vector<int> *nodes) const
 		nodes->push_back(s.front());
 		s.pop();
 	}
+}
+
+bool BFSearch::contains(int node)
+{
+	queue<int> temp(frontier);
+	while (!temp.empty()){
+		if (node == temp.front())
+			return true;
+		temp.pop();
+	}
+	return false;
 }
 
 void drawGraphSearch(const Graph &graph,
@@ -347,6 +359,21 @@ void drawGraphSearch(const Graph &graph,
 
 		plotter.finishFile();
 	}
+	sprintf(file, "%s%i.gpi", fileName, iteration);
+	sprintf(title, "%s%i", titleName, iteration);
+
+	++iteration;
+
+	plotter.createFile(file, title);
+
+	plotter.drawGraph(graph);
+	plotter.drawGraphSearch(graph, search);
+
+	char time[64];
+	sprintf(time, "%.4f seconds", (timeGetTime() - startTime) / 1000.0f);
+	plotter.drawText(-400, -370, time);
+
+	plotter.finishFile();
 
 	delete search;
 }
