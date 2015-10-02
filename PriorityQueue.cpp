@@ -1,11 +1,11 @@
 #include "priorityQueue.h"
 
 PriorityQueue::PriorityQueue(){
-	pq = new deque<Vector>();//change to dequeue
+	pq = new deque<int>();//change to dequeue
 	costs = new deque<double>();
 }
 
-void PriorityQueue::push(Vector node, double priority){
+void PriorityQueue::push(int node, double priority){
 	bool inserted = false;
 	for (int i = pq->size() - 1; i >= 0; i--){
 		if (costs->at(i)>priority){
@@ -19,6 +19,7 @@ void PriorityQueue::push(Vector node, double priority){
 				costs->insert(costs->begin() + i + 1, priority);
 				inserted = true;
 			}
+			break;
 		}
 	}
 	if (!inserted){
@@ -27,29 +28,35 @@ void PriorityQueue::push(Vector node, double priority){
 	}
 }
 
-Vector PriorityQueue::pop(){
-	Vector back = Vector(pq->back());
+int PriorityQueue::pop(){
+	int back = pq->back();
 	costs->pop_back();
 	pq->pop_back();
 	return back;
 }
 
-void PriorityQueue::update(Vector node, double newPriority){
+bool PriorityQueue::update(int node, double newPriority){
 	//for updating node inside
 	int index = find(node);
-	if (index != -1){
+	if (index != -1 && newPriority < costs->at(index)){
 		pq->erase(pq->begin() + index);
 		costs->erase(costs->begin() + index);
 		push(node, newPriority);
+		return true;
 	}
+	return false;
 }
 
-int PriorityQueue::find(Vector node){
+int PriorityQueue::find(int node){
 	for (int i = 0; i < pq->size(); i++){
-		if (node.x == pq->at(i).x && node.y == pq->at(i).y){
+		if (node == pq->at(i)){
 			return i;
 		}
 	}
 	return -1;
+}
+
+bool PriorityQueue::empty(){
+	return pq->empty();
 }
 

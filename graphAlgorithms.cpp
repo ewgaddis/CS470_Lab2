@@ -266,7 +266,7 @@ bool BFSearch::search(int iterations)
 			continue;
 		}
 
-		setVisited(curNode);//good till now
+		setVisited(curNode);
 
 		vector<int> nodes;
 		graph->getNodesTo(curNode, &nodes);
@@ -317,6 +317,89 @@ bool BFSearch::contains(int node)
 		temp.pop();
 	}
 	return false;
+}
+
+ASearch::ASearch(const Graph &g) : GraphSearch(g)
+{
+	frontier.push(0,0);
+}
+
+bool ASearch::search(int iterations)
+{
+	while (!frontier.empty() && iterations > 0)
+	{
+		int curNode = frontier.pop();//frontier.pq->back();
+		//frontier.pop();//grab cheapest node
+
+		if (isVisited(curNode))
+		{
+			continue;
+		}
+
+		setVisited(curNode);
+		bool visited = isVisited(curNode);
+
+		if (curNode == 1)
+		{
+			return true;
+		}
+
+		vector<int> nodes;
+		graph->getNodesTo(curNode, &nodes);
+
+		vector<int>::iterator itNode = nodes.begin();
+		while (itNode != nodes.end())
+		{
+			bool exists = contains(*itNode);
+			Vector nextN = graph->getNodePos(*itNode);
+			Vector curN = graph->getNodePos(curNode);
+			Vector goal = graph->getNodePos(1);
+			double distance = sqrt(((curN.x - nextN.x)*(curN.x - nextN.x)) + ((curN.y - nextN.y)*(curN.y - nextN.y)));
+			distance += sqrt(((nextN.x - goal.x)*(nextN.x - goal.x)) + ((nextN.y - goal.y)*(nextN.y - goal.y)));
+			if (!isVisited(*itNode) && !exists)
+			{	
+				frontier.push(*itNode, distance);
+				setParent(*itNode, curNode);
+			}
+			else if (exists){
+				frontier.update(*itNode, distance);
+			}
+
+			++itNode;
+		}
+
+		--iterations;
+	}
+
+	return false;
+}
+
+void ASearch::getFrontier(std::vector<int> *nodes) const
+{
+	nodes->clear();
+
+	deque<int> s(*frontier.pq);
+
+	while (!s.empty())
+	{
+		nodes->push_back(s.front());
+		s.pop_front();
+	}
+}
+
+bool ASearch::contains(int node)
+{
+	if (frontier.find(node) < 0)
+		return false;
+	else
+		return true;
+	/*deque<int> temp(*frontier.pq);
+	while (!temp.empty()){
+		if (node == temp.front())
+			return true;
+		temp.pop_front();
+	}
+	return false;*/
 }
 
 void drawGraphSearch(const Graph &graph,

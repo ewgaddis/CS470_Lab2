@@ -4,6 +4,7 @@
 #include "graph.h"
 #include "geometry.h"
 #include "team.h"
+#include "priorityQueue.h"
 
 #include <vector>
 #include <deque>
@@ -98,6 +99,21 @@ public:
 
 	void getFrontier(std::vector<int> *nodes) const;
 };
+
+class ASearch : public GraphSearch
+{
+private:
+	PriorityQueue frontier;//of ints
+	bool contains(int node);
+
+public:
+	ASearch(const Graph &g);
+
+	bool search(int iterations);
+
+	void getFrontier(std::vector<int> *nodes) const;
+};
+
 void drawGraphSearch(const Graph &graph,
 					 GraphSearch *search,
 					 int maxIterations,

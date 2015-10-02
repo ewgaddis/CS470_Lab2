@@ -11,15 +11,16 @@ class PriorityQueue {
 public:
 	//vector<Vector> *pq;
 	//vector<double> *costs;
-	deque<Vector> *pq;
+	deque<int> *pq;
 	deque<double> *costs;
 	PriorityQueue();
 
-		void push(Vector node,double priority);
-		Vector pop();
-		Vector at(int index);
-		void update(Vector node,double newPriority);
-		int find(Vector node);
+		void push(int node,double priority);
+		int pop();
+		int at(int index);
+		bool update(int node,double newPriority);
+		int find(int node);
+		bool empty();
 
 
 private:

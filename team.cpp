@@ -73,9 +73,9 @@ bool robot_update()
 						  Vector(flags.at(0).pos[0], flags.at(0).pos[1]),
 						  obstacles, &graph);
 
-	drawGraphSearch(graph, new BFSearch(graph), 100,
-					"./Data/BFS/bfs",
-					"Breadth-First Search - Iteration #");
+	drawGraphSearch(graph, new DFSearch(graph), 100,
+					"./Data/DFS2/2dfs",
+					"Depth First Search - Iteration #");
 
 	return false;
 }
