@@ -322,6 +322,8 @@ bool BFSearch::contains(int node)
 ASearch::ASearch(const Graph &g) : GraphSearch(g)
 {
 	frontier.push(0,0);
+	cost = new int[g.getNumberNodes()];
+	cost[0] = 0;
 }
 
 bool ASearch::search(int iterations)
@@ -354,15 +356,21 @@ bool ASearch::search(int iterations)
 			Vector nextN = graph->getNodePos(*itNode);
 			Vector curN = graph->getNodePos(curNode);
 			Vector goal = graph->getNodePos(1);
-			double distance = sqrt(((curN.x - nextN.x)*(curN.x - nextN.x)) + ((curN.y - nextN.y)*(curN.y - nextN.y)));
-			distance += sqrt(((nextN.x - goal.x)*(nextN.x - goal.x)) + ((nextN.y - goal.y)*(nextN.y - goal.y)));
+			double costToNextNode = sqrt(((curN.x - nextN.x)*(curN.x - nextN.x)) + ((curN.y - nextN.y)*(curN.y - nextN.y))) + cost[curNode];
+			//huristic added here
+			double costToNextNodeWithH = costToNextNode + sqrt(((nextN.x - goal.x)*(nextN.x - goal.x)) + ((nextN.y - goal.y)*(nextN.y - goal.y)));
+			//double costToNextNodeWithH = costToNextNode + ((nextN.x - goal.x)*(nextN.x - goal.x)) + ((nextN.y - goal.y)*(nextN.y - goal.y))*10;
 			if (!isVisited(*itNode) && !exists)
 			{	
-				frontier.push(*itNode, distance);
+				frontier.push(*itNode, costToNextNodeWithH);
 				setParent(*itNode, curNode);
+				cost[*itNode] = costToNextNode;
 			}
 			else if (exists){
-				frontier.update(*itNode, distance);
+				if (frontier.update(*itNode, costToNextNodeWithH)){
+					cost[*itNode] = costToNextNode;
+					setParent(*itNode, curNode);
+				}
 			}
 
 			++itNode;
