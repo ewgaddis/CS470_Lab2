@@ -33,3 +33,4 @@
 *.sln
 *.sdf
 *.opensdf
+/Data/*

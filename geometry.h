@@ -117,6 +117,8 @@ typedef struct sVector
 Vector operator * (double s, const Vector &v);
 std::ostream & operator << (std::ostream &out, const Vector &v);
 
+double vectorDistance(const Vector &v1, const Vector &v2);
+
 typedef struct sEdge
 {
 	Vector e0;

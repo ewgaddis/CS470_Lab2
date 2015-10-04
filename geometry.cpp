@@ -14,6 +14,14 @@ std::ostream & operator << (std::ostream &out, const Vector &v)
 	return out << "[" << v.x << ", " << v.y << "]";
 }
 
+double vectorDistance(const Vector &v1, const Vector &v2)
+{
+	double xDiff = v2.x - v1.x;
+	double yDiff = v2.y - v1.y;
+
+	return sqrt(xDiff * xDiff + yDiff * yDiff);
+}
+
 void closestPointOnLine(const Vector &endpoint0,
 						const Vector &endpoint1,
 						const Vector &p,

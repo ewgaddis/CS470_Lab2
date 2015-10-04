@@ -155,15 +155,26 @@ void GNUPlotter::drawGraphSearch(const Graph &graph,
 	deque<int> path;
 	graphSearch->getPath(&path);
 
-	deque<int>::iterator itNode = path.begin() + 1;
-	while(itNode != path.end())
+	if(path.size() > 1)
 	{
-		Vector pos1 = graph.getNodePos(*(itNode - 1));
-		Vector pos2 = graph.getNodePos(*(itNode    ));
+		double totalCost = 0.0;
 
-		drawArrow(pos1, pos2, 1);
+		deque<int>::iterator itNode = path.begin() + 1;
+		while(itNode != path.end())
+		{
+			Vector pos1 = graph.getNodePos(*(itNode - 1));
+			Vector pos2 = graph.getNodePos(*(itNode    ));
 
-		++itNode;
+			drawArrow(pos1, pos2, 1);
+
+			totalCost += vectorDistance(pos1, pos2);
+
+			++itNode;
+		}
+
+		char cost[64];
+		sprintf(cost, "Cost: %.3f", totalCost);
+		drawText(-400, -320, cost);
 	}
 
 	const bool *visited = graphSearch->getVisited();
