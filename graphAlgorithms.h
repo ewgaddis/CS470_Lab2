@@ -104,6 +104,7 @@ class ASearch : public GraphSearch
 {
 private:
 	PriorityQueue frontier;//of ints
+	int *cost;
 	bool contains(int node);
 
 public:
