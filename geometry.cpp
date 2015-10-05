@@ -92,26 +92,26 @@ bool doLinesIntersect(const Vector &p0,
 					  const Vector &q0,
 					  const Vector &q1)
 {
-	Vector r(p1 - p0);
-	Vector s(q1 - q0);
+	Vector line1(p1 - p0);
+	Vector line2(q1 - q0);
 
-	double rxs = cross(r, s);
+	double c = cross(line1, line2);
 
-	if(abs(rxs) < 0.00001)
+	if(abs(c) < 0.00001)
 	{
 		return false;
 	}
 
-	double u = cross(q0 - p0, r) / rxs;
+	double u = cross(q0 - p0, line1) / c;
 
 	if(u < 0.0 || u > 1.0)
 	{
 		return false;
 	}
 
-	double t = cross(q0 - p0, s) / rxs;
+	double v = cross(q0 - p0, line2) / c;
 
-	if(t < 0.0 || t > 1.0)
+	if(v < 0.0 || v > 1.0)
 	{
 		return false;
 	}
